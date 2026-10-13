@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"{{ profile.name }}","jobTitle":"Project Manager, Product & Digital Transformation","worksFor":{"@type":"Organization","name":"Veracity Supply Chain Ltd."},"alumniOf":"Indian Institute of Management, Bodh Gaya","email":"mailto:{{ profile.email }}"{% if profile.linkedin %},"sameAs":["{{ profile.linkedin }}"]{% endif %}}
+</script>
+{% endblock %}
+{% block body %}
+<div class="intro" aria-hidden="true">
+  <div class="intro-card glass glass--panel">
+    <p class="mono tiny">Portfolio · 2026</p>
+    <p class="intro-name"><span>Amit</span> <span>Patidar</span></p>
+    <p class="intro-sub mono">Product · Data · AI · Operations</p>
+    <div class="intro-bar"><i></i></div>
+  </div>
+</div>
+<div class="progress" aria-hidden="true"><i></i></div>
+<div class="ambient" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i><div class="grid-bg"></div><div class="grid-glow"></div></div>
+
+<nav class="rail" aria-label="Chapters">
+  <a href="#top" data-t="top"><i></i><span>Intro</span></a>
+  <a href="#about" data-t="about"><i></i><span>About</span></a>
+  <a href="#journey" data-t="journey"><i></i><span>Journey</span></a>
+  <a href="#work" data-t="work"><i></i><span>ShiftEaze</span></a>
+  <a href="#labs" data-t="labs"><i></i><span>Labs</span></a>
+  <a href="#projects" data-t="projects"><i></i><span>Projects</span></a>
+  <a href="#experience" data-t="experience"><i></i><span>Experience</span></a>
+  <a href="#capabilities" data-t="capabilities"><i></i><span>Capabilities</span></a>
+  <a href="#contact" data-t="contact"><i></i><span>Contact</span></a>
+</nav>
+
+<header class="nav-wrap">
+  <nav class="nav glass glass--nav" aria-label="Primary">
+    <a class="wordmark" href="#top">Amit Patidar</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><span></span><span></span></button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="#journey" data-t="journey">Journey</a></li>
+      <li><a href="#work" data-t="work">ShiftEaze</a></li>
+      <li><a href="#labs" data-t="labs">Labs</a></li>
+      <li><a href="#projects" data-t="projects">Projects</a></li>
+      <li><a href="#experience" data-t="experience">Experience</a></li>
+      <li><a href="#capabilities" data-t="capabilities">Capabilities</a></li>
+      <li><a href="#contact" data-t="contact">Contact</a></li>
+      <li><a class="nav-cta" href="{% url 'portfolio:resume' %}" target="_blank" rel="noopener">Resume</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" data-t="top">
+    <canvas class="field" aria-hidden="true"></canvas>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">{{ profile.role }} · {{ profile.company }}</p>
+        <h1 class="hero-title">
+          {% for w in profile.headline.split %}<span class="w"><span{% if w == "intelligent" or w == "AI." %} class="grad"{% endif %}>{{ w }}</span></span> {% endfor %}
+        </h1>
+        <p class="lead glass glass--card reveal">{{ profile.summary }}</p>
+        <div class="cta-row reveal">
+          <a class="btn btn--primary magnetic" href="#journey">Start the journey</a>
+          <a class="btn btn--glass magnetic" href="{% url 'portfolio:resume' %}" target="_blank" rel="noopener">View resume</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Key ShiftEaze results">
+        <div class="layer layer--back glass" aria-hidden="true"></div>
+        <div class="layer layer--mid glass tilt">
+          <i class="scan" aria-hidden="true"></i>
+          <p class="mono tiny"><span class="live"></span>ShiftEaze · verified outcomes</p>
+          <dl class="stat-grid">
+            {% for s in stats %}<div class="stat"><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+          </dl>
+        </div>
+        <svg class="layer layer--front" viewBox="0 0 320 120" aria-hidden="true">
+          <path class="draw" d="M8 100 C60 96 70 40 120 52 S190 92 232 40 S292 18 312 14" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#7fb2ff"/><stop offset="1" stop-color="#2f6bff"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+    <p class="scroll-cue mono tiny" aria-hidden="true">Scroll</p>
+  </section>
+
+  <div class="band glass" aria-label="ShiftEaze deployment sites">
+    <span class="band-label mono tiny">ShiftEaze deployed at</span>
+    <div class="marquee"><div class="marquee-track">
+      {% for n, k in sites %}<span class="m-item"><i></i>{{ n }}</span>{% endfor %}
+      {% for n, k in sites %}<span class="m-item" aria-hidden="true"><i></i>{{ n }}</span>{% endfor %}
+      {% for n, k in sites %}<span class="m-item" aria-hidden="true"><i></i>{{ n }}</span>{% endfor %}
+      {% for n, k in sites %}<span class="m-item" aria-hidden="true"><i></i>{{ n }}</span>{% endfor %}
+    </div></div>
+  </div>
+
+  <section class="section" id="about" data-t="about">
+    <div class="wrap">
+      <p class="eyebrow"><b>01</b> About</p>
+      <h2 class="h2">Business problems, translated into engineered solutions.</h2>
+      <dl class="glance">
+        {% for k, v in glance %}<div class="glance-i glass glass--card reveal"><dt class="mono tiny">{{ k }}</dt><dd>{{ v }}</dd></div>{% endfor %}
+      </dl>
+      <div class="pillars">
+        {% for t, d in pillars %}
+        <article class="pillar glass glass--card reveal"><span class="mono tiny">0{{ forloop.counter }}</span><h3>{{ t }}</h3><p>{{ d }}</p></article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="journey" id="journey" data-t="journey">
+    <div class="journey-stage">
+      <div class="wrap journey-grid">
+        <div class="journey-copy">
+          <p class="eyebrow"><b>02</b> The journey</p>
+          <h2 class="h2">From raw operations data to a manned shift.</h2>
+          <ol class="steps">
+            {% for t, d in journey %}
+            <li class="step glass glass--card{% if forloop.first %} is-active{% endif %}" data-step="{{ forloop.counter0 }}">
+              <span class="mono tiny">0{{ forloop.counter }}</span>
+              <h3>{{ t }}</h3><div class="sb"><p>{{ d }}</p></div>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+        <figure class="scene glass glass--panel">
+          <svg viewBox="0 0 640 460" role="img" aria-labelledby="sc-t">
+            <title id="sc-t">Conceptual scene: operational data points become a prediction model, then a roster, then measured outcomes</title>
+            <g class="s-data"></g>
+            <g class="s-model"></g>
+            <g class="s-roster"></g>
+            <g class="s-out">
+              <line x1="90" y1="400" x2="550" y2="400" stroke="#cfd6e6"/>
+              <rect class="bar bar-a" x="150" y="140" width="130" height="260" rx="14" fill="#cdd7ee"/>
+              <rect class="bar bar-b" x="360" y="109" width="130" height="291" rx="14" fill="url(#bg)"/>
+              <text x="215" y="130" text-anchor="middle" class="sc-n">84%</text>
+              <text x="425" y="99" text-anchor="middle" class="sc-n sc-n--b">94%</text>
+              <text x="215" y="428" text-anchor="middle" class="sc-s">Before</text>
+              <text x="425" y="428" text-anchor="middle" class="sc-s">After ShiftEaze</text>
+              <text x="320" y="48" text-anchor="middle" class="sc-s">Manpower fulfillment</text>
+            </g>
+            <defs><linearGradient id="bg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#2f6bff"/><stop offset="1" stop-color="#7fd6ff"/></linearGradient></defs>
+          </svg>
+          <figcaption class="mono tiny"><span class="cap-step">04 · Measured outcomes</span> · Conceptual illustration, not a production screenshot.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work" data-t="work">
+    <div class="wrap">
+      <p class="eyebrow"><b>03</b> ShiftEaze</p>
+      <h2 class="h2">{{ shifteaze.title }}<span class="muted"> — {{ shifteaze.tagline }}</span></h2>
+
+      <div class="case">
+        <div class="case-text glass glass--panel reveal">
+          <h3 class="label">Context</h3><p>{{ shifteaze.context }}</p>
+          <h3 class="label">My role</h3><p>{{ shifteaze.role }}</p>
+          <h3 class="label">Approach</h3>
+          <ul class="ticks">{% for a in shifteaze.approach %}<li>{{ a }}</li>{% endfor %}</ul>
+          <h3 class="label">Scale</h3><p>{{ shifteaze.scale }}</p>
+        </div>
+        <div class="case-side">
+          <h3 class="label">Deployed at</h3>
+          {% for n, k in sites %}
+          <article class="site glass glass--card reveal"><i aria-hidden="true"></i><div><h4>{{ n }}</h4><p class="mono tiny">{{ k }}</p></div></article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="outcomes">
+        {% for v, l in shifteaze.outcomes %}
+        <div class="outcome glass glass--card reveal"><strong>{{ v }}</strong><span>{{ l }}</span></div>
+        {% endfor %}
+      </div>
+
+      <h3 class="label modules-label">The problem it solves</h3>
+      <div class="problems">
+        {% for x in shifteaze.problems %}<p class="problem glass glass--card reveal">{{ x }}</p>{% endfor %}
+      </div>
+
+      <h3 class="label modules-label">What ShiftEaze does</h3>
+      <div class="features">
+        {% for t, d in features %}
+        <article class="feature glass glass--card reveal"><span class="mono tiny">0{{ forloop.counter }}</span><h3>{{ t }}</h3><p>{{ d }}</p></article>
+        {% endfor %}
+      </div>
+
+      <h3 class="label modules-label">One platform, two faces</h3>
+      <div class="faces">
+        {% for name, items in faces %}
+        <div class="face glass glass--card reveal"><h4>{{ name }}</h4>
+          <ol>{% for i in items %}<li>{{ i }}</li>{% endfor %}</ol>
+        </div>
+        {% endfor %}
+      </div>
+
+      <h3 class="label modules-label">Before and after</h3>
+      <div class="compare glass glass--panel reveal" data-compare>
+        <div class="cmp-layer cmp-before"><p class="cmp-title mono tiny">Before</p>
+          {% for k, b, a in compare %}<div class="cmp-row"><span class="mono tiny">{{ k }}</span><p>{{ b }}</p></div>{% endfor %}
+        </div>
+        <div class="cmp-layer cmp-after"><p class="cmp-title mono tiny">With ShiftEaze</p>
+          {% for k, b, a in compare %}<div class="cmp-row"><span class="mono tiny">{{ k }}</span><p>{{ a }}</p></div>{% endfor %}
+        </div>
+        <span class="cmp-hint mono tiny" aria-hidden="true">Drag to compare ←</span>
+        <span class="cmp-handle" aria-hidden="true"></span>
+        <input class="cmp-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare the manual process with ShiftEaze">
+      </div>
+
+      <h3 class="label modules-label">Nine modules I designed <span class="muted">· select one</span></h3>
+      <div class="modules" data-modules>
+        <div class="mod-grid" role="group" aria-label="ShiftEaze modules">
+          {% for m in modules %}
+          <button type="button" class="mod glass glass--card" data-name="{{ m.name }}" data-links="{{ m.links }}" data-desc="{{ m.desc }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"><span class="mono tiny">0{{ forloop.counter }}</span>{{ m.name }}</button>
+          {% endfor %}
+        </div>
+        <aside class="mod-detail glass glass--panel" aria-live="polite">
+          <h4>{{ modules.0.name }}</h4>
+          <p class="mod-desc">{{ modules.0.desc }}</p>
+          <p class="mod-rel mono tiny"></p>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section labs" id="labs" data-t="labs">
+    <div class="wrap">
+      <p class="eyebrow"><b>04</b> Interactive labs</p>
+      <h2 class="h2">See the logic working, not just described.</h2>
+      <p class="lab-intro">Each lab is a simplified, illustrative model of the logic in my project write-ups. All numbers are made up; none of it is production data.</p>
+      <div class="lab-nav" role="tablist" aria-label="Project labs">
+        <button type="button" role="tab" id="labtab-shifteaze" aria-controls="lab-shifteaze" aria-selected="true">ShiftEaze</button>
+        <button type="button" role="tab" id="labtab-cat" aria-controls="lab-cat" aria-selected="false">CAT Diagnostic</button>
+        <button type="button" role="tab" id="labtab-krishi" aria-controls="lab-krishi" aria-selected="false">KrishiSaarthi</button>
+      </div>
+      <div id="lab-shifteaze" role="tabpanel" aria-labelledby="labtab-shifteaze" class="lab" data-lab="shifteaze"><p class="lab-fallback">Interactive lab: cycle builder, absence risk and backfill, geofenced punch, gap simulator and AI calling flow. Needs JavaScript.</p></div>
+      <div id="lab-cat" role="tabpanel" aria-labelledby="labtab-cat" class="lab" data-lab="cat" hidden><p class="lab-fallback">Interactive lab: a diagnostic engine that scores topic mastery from repeated attempts. Needs JavaScript.</p></div>
+      <div id="lab-krishi" role="tabpanel" aria-labelledby="labtab-krishi" class="lab" data-lab="krishi" hidden><p class="lab-fallback">Interactive lab: a farm map with NDVI, soil moisture, weather, irrigation, price forecast and profitability. Needs JavaScript.</p></div>
+    </div>
+  </section>
+
+
+  <section class="section" id="projects" data-t="projects">
+    <div class="wrap">
+      <p class="eyebrow"><b>05</b> Projects</p>
+      <h2 class="h2">More products and case studies.</h2>
+
+      <h3 class="label modules-label">Case studies</h3>
+      <div class="cases">
+        {% for c in cases %}
+        <article class="case-study glass glass--panel reveal" data-collapsible>
+          <header>
+            <p class="mono tiny">{{ c.tagline }}</p>
+            <h3>{{ c.title }}</h3>
+            <ul class="chips">{% for t in c.tags %}<li class="chip glass">{{ t }}</li>{% endfor %}</ul>
+          </header>
+          <div class="cs-sections">
+            {% for sec in c.sections %}
+            <section class="cs-sec">
+              <h4 class="label">{{ sec.heading }}</h4>
+              {% if sec.bullets %}<ul class="ticks">{% for b in sec.bullets %}<li>{{ b }}</li>{% endfor %}</ul>{% else %}<p>{{ sec.text }}</p>{% endif %}
+            </section>
+            {% endfor %}
+          </div>
+          <button type="button" class="cs-toggle btn btn--glass" aria-expanded="false">Read the full case study</button>
+        </article>
+        {% endfor %}
+      </div>
+
+      <h3 class="label modules-label">More products</h3>
+      <div class="projects">
+        {% for p in projects %}
+        <article class="project glass glass--card reveal"><p class="mono tiny">{{ p.meta }}</p><h3>{{ p.title }}</h3><p>{{ p.body }}</p></article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience" data-t="experience">
+    <div class="wrap narrow">
+      <p class="eyebrow"><b>06</b> Experience</p>
+      <h2 class="h2">From rostering floor to product ownership.</h2>
+      <ol class="timeline">
+        {% for e in experience %}
+        <li class="t-item reveal">
+          <span class="t-dot" aria-hidden="true"></span>
+          <div class="t-card glass glass--card">
+            <p class="mono tiny">{{ e.period }} · {{ e.company }}</p>
+            <h3>{{ e.role }}</h3>
+            <ul class="ticks">{% for p in e.points %}<li>{{ p }}</li>{% endfor %}</ul>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="capabilities" data-t="capabilities">
+    <div class="wrap">
+      <p class="eyebrow"><b>07</b> Capabilities</p>
+      <h2 class="h2">What I bring to a product team.</h2>
+      <div class="caps">
+        <div class="cap-tabs" role="tablist" aria-label="Capability groups">
+          {% for c in capabilities %}
+          <button role="tab" id="tab-{{ forloop.counter }}" aria-controls="panel-{{ forloop.counter }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" class="cap-tab">{{ c.name }}</button>
+          {% endfor %}
+        </div>
+        {% for c in capabilities %}
+        <div role="tabpanel" id="panel-{{ forloop.counter }}" aria-labelledby="tab-{{ forloop.counter }}" class="cap-panel glass glass--panel" {% if not forloop.first %}hidden{% endif %}>
+          <ul class="chips">{% for i in c.items %}<li class="chip glass">{{ i }}</li>{% endfor %}</ul>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="edu">
+        <div>
+          <h3 class="label">Education</h3>
+          {% for e in education %}
+          <article class="edu-item glass glass--card reveal"><h4>{{ e.title }} · {{ e.year }}</h4><p>{{ e.org }} · {{ e.detail }}</p></article>
+          {% endfor %}
+        </div>
+        <div>
+          <h3 class="label">Credentials & recognition</h3>
+          {% for c in credentials %}
+          <article class="edu-item glass glass--card reveal"><p>{{ c }}</p></article>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" data-t="contact">
+    <div class="wrap">
+      <div class="contact-card glass glass--panel reveal">
+        <p class="eyebrow"><b>08</b> Contact</p>
+        <h2 class="h2">Let's build something that works on the ground.</h2>
+        <div class="cta-row">
+          <a class="btn btn--primary magnetic" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+          <a class="btn btn--glass magnetic" href="{% url 'portfolio:resume' %}" download>Download resume</a>
+          {% if profile.whatsapp %}<a class="btn btn--glass magnetic" href="https://wa.me/{{ profile.whatsapp }}?text=Hi%20Amit%2C%20I%20saw%20your%20portfolio." target="_blank" rel="noopener noreferrer">WhatsApp</a>{% endif %}
+                    {% if profile.linkedin %}<a class="btn btn--glass magnetic" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><div class="wrap"><span>© 2026 {{ profile.name }}</span><button type="button" class="calm-toggle mono tiny" aria-pressed="false">Calm mode: off</button><span>{{ profile.location }}</span></div></footer>
+<button type="button" class="to-top glass" aria-label="Scroll to top" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg><svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20"/></svg></button>
+{% endblock %}

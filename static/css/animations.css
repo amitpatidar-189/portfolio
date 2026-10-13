@@ -1,0 +1,13 @@
+/* Content is visible by default; hidden states apply only when JS is running (.js) */
+.js .reveal { opacity: 0; transform: translateY(24px); }
+.js .hero-title .w > span { transform: translateY(110%); }
+.js .layer { opacity: 0; }
+.js .hero-title.ready .w > span { transform: none; transition: transform .9s var(--ease); transition-delay: calc(var(--i) * 60ms); }
+.draw { stroke-dasharray: 600; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal, .js .layer { opacity: 1 !important; transform: none !important; }
+  .js .hero-title .w > span { transform: none !important; transition: none !important; }
+  .draw { stroke-dashoffset: 0 !important; }
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -1,0 +1,20 @@
+@media (max-width: 1000px) {
+  .hero-grid, .case, .edu { grid-template-columns: 1fr; }
+  .hero-visual { max-width: 520px; width: 100%; margin-inline: auto; }
+  .pillars, .outcomes { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  :root { --s-5: 3.5rem; --s-6: 5rem; --glass-blur: 12px; }
+  .nav { width: 100%; justify-content: space-between; border-radius: var(--r-md); position: relative; padding: .5rem .6rem .5rem 1.1rem; }
+  .nav-toggle { display: grid; gap: 5px; width: 44px; height: 44px; place-content: center; background: none; border: 0; }
+  .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--ink); transition: transform .25s; }
+  .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+  .nav-links { display: none; position: absolute; top: calc(100% + .5rem); left: 0; right: 0; flex-direction: column; align-items: stretch; padding: .5rem; border-radius: var(--r-md); background: rgba(255,255,255,.98); border: 1px solid var(--line); box-shadow: var(--shadow-2); }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: .8rem 1rem; }
+  .hero { padding-top: 6.5rem; }
+  .pillars, .outcomes, .projects { grid-template-columns: 1fr; }
+  .contact-card { padding: var(--s-4) var(--s-3); }
+  .contact-card .btn { width: 100%; overflow-wrap: anywhere; }
+}

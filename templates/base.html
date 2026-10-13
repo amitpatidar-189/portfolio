@@ -1,0 +1,40 @@
+{% load static %}<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Amit Patidar · Product & Digital Transformation{% endblock %}</title>
+  <meta name="description" content="Amit Patidar builds AI-enabled B2B workforce products for shift-based industries. ShiftEaze: manpower fulfillment 84% to 94%, 100% leave compliance.">
+  <meta property="og:title" content="Amit Patidar · Product & Digital Transformation">
+  <meta property="og:description" content="{{ profile.headline }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}/">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og.png' %}">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="{% static 'icons/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'fonts/inter-tight.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/glassmorphism.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/journey.css' %}">
+  <link rel="stylesheet" href="{% static 'css/interactive.css' %}">
+  <link rel="stylesheet" href="{% static 'css/labs.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+  <script>document.documentElement.classList.replace('no-js','js')</script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  {% block body %}{% endblock %}
+  <script src="{% static 'js/vendor/gsap.min.js' %}" defer></script>
+  <script src="{% static 'js/vendor/ScrollTrigger.min.js' %}" defer></script>
+  <script type="module" src="{% static 'js/main.js' %}"></script>
+  {% if plausible_domain %}<script defer data-domain="{{ plausible_domain }}" src="https://plausible.io/js/script.js"></script>{% endif %}
+</body>
+</html>
