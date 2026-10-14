@@ -1,0 +1,25 @@
+/* Skill sample diagrams (rendered inside the dark console from labs.css) */
+.skill { font: inherit; cursor: pointer; color: var(--ink); border: 1px solid var(--glass-border); }
+.cap-panel .chip.skill:hover { translate: 0 -3px; border-color: rgba(47,107,255,.5); color: var(--blue-ink); }
+.chip.skill[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.skill-view { margin-top: var(--s-2); }
+.sk-head h3 { font-size: 1.15rem; } .sk-head p { margin: .2rem 0 .8rem; }
+.sk { width: 100%; height: auto; display: block; }
+.sk .t { font: 500 12px var(--font); fill: #e9efff; } .sk .s { font: 400 10.5px var(--mono); fill: #a3b3d4; }
+.sk .k { font: 500 9.5px var(--mono); letter-spacing: .12em; fill: #a3b3d4; } .sk .ok { font: 700 13px var(--mono); fill: #3ddc97; }
+.sk .cs { font: 600 10px var(--mono); fill: #08101f; } .sk .big { font: 300 26px var(--font); fill: #fff; } .sk .big2 { font: 400 16px var(--font); fill: #fff; }
+.sk .code { font: 400 12px var(--mono); fill: #e9efff; white-space: pre; } .sk .code2 { font: 500 11.5px var(--mono); fill: #e9efff; } .sk .kw { fill: #7fd6ff; font-weight: 600; }
+.sk .bx { fill: rgba(255,255,255,.06); stroke: rgba(127,214,255,.5); stroke-width: 1.3; } .sk .bx.dim { fill: rgba(255,255,255,.025); stroke: rgba(255,255,255,.18); }
+.sk .bx.hl { fill: rgba(91,140,255,.2); stroke: #7fd6ff; } .sk .bx.sel { fill: rgba(127,214,255,.22); stroke: #7fd6ff; stroke-width: 2; }
+.sk .hd { fill: rgba(127,214,255,.18); } .sk .btn { fill: #5b8cff; } .sk .dot { fill: #7fd6ff; }
+.sk .ln { stroke: #7fd6ff; fill: none; stroke-width: 1.6; stroke-linecap: round; } .sk .ln.dash { stroke: rgba(255,255,255,.25); stroke-dasharray: 4 5; }
+.sk .arrow { fill: #7fd6ff; } .sk .bar { fill: rgba(255,255,255,.1); } .sk .bar.fill { fill: #5b8cff; } .sk .bar.fill2 { fill: #7fd6ff; } .sk .bar.fill3 { fill: #a99bff; }
+.sk .area { fill: rgba(91,140,255,.18); } .sk .legend { fill: url(#sk-lg); } .sk .dia { fill: #ffc857; }
+.sk .chip-ok { fill: #3ddc97; } .sk .chip-bad { fill: #ff7b7b; } .sk .chip-warn { fill: #ffc857; } .sk .chip-blue { fill: #7fd6ff; }
+.sk .cell-D { fill: rgba(255,200,87,.3); } .sk .cell-N { fill: rgba(169,155,255,.35); } .sk .cell-O { fill: rgba(255,255,255,.08); }
+.sk .an { opacity: 0; animation: skIn .6s var(--ease) forwards; animation-delay: var(--d, 0ms); }
+.sk .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: skDraw 1.6s ease-out .3s forwards; }
+@keyframes skIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes skDraw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .sk .an { animation: none; opacity: 1; } .sk .draw { animation: none; stroke-dashoffset: 0; } }
+@media (max-width: 720px) { .sk-head p { font-size: .9rem; } }

@@ -1,10 +1,8 @@
 import { startField } from './field.js';
 
 const root = document.documentElement;
-let calm = false;
-try { calm = localStorage.getItem('calm') === '1'; } catch (e) { /* storage unavailable */ }
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches || calm;
-if (calm) { root.classList.remove('js'); root.classList.add('calm'); }
+// Animation stays on by default; only an OS-level 'reduce motion' setting turns it down.
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -54,20 +52,9 @@ $('.caps')?.addEventListener('keydown', e => {
 });
 
 
-/* ---------- Calm mode (persisted, reloads to apply) ---------- */
-const calmBtn = $('.calm-toggle');
-if (calmBtn) {
-  calmBtn.setAttribute('aria-pressed', calm);
-  calmBtn.textContent = `Calm mode: ${calm ? 'on' : 'off'}`;
-  calmBtn.addEventListener('click', () => {
-    try { localStorage.setItem('calm', calm ? '0' : '1'); } catch (e) { /* ignore */ }
-    location.reload();
-  });
-}
-
 /* ---------- Sliding nav pill ---------- */
 const pillHost = $('#nav-links');
-if (pillHost && matchMedia('(min-width: 721px)').matches) {
+if (pillHost && matchMedia('(min-width: 901px)').matches) {
   const pill = document.createElement('i'); pill.className = 'nav-pill'; pill.setAttribute('aria-hidden', 'true');
   pillHost.prepend(pill); pillHost.classList.add('has-pill');
   const items = $$('a:not(.nav-cta)', pillHost);
@@ -117,8 +104,8 @@ if (modRoot) {
 const cmp = $('[data-compare]');
 if (cmp) {
   const range = $('.cmp-range', cmp);
-  const set = () => { cmp.style.setProperty('--pos', range.value + '%'); cmp.style.setProperty('--p', range.value > 90 ? 1 : 0); };
-  range.value = 100;
+  const set = () => cmp.style.setProperty('--pos', range.value + '%');
+  range.value = 50;
   range.addEventListener('input', set); set();
 }
 
@@ -171,6 +158,8 @@ if (!hasGsap || reduce) {
   if (canvas) startField(canvas, { reduce: true });
 } else {
   gsap.registerPlugin(ScrollTrigger);
+  // Mobile browsers resize the viewport as the address bar hides and shows; do not re-layout the pins for that.
+  ScrollTrigger.config({ ignoreMobileResize: true });
   $$('.hero-title .w').forEach((w, i) => w.style.setProperty('--i', i));
 
   // Cinematic intro -> hero. Skippable by click, key, wheel or touch.
@@ -218,42 +207,47 @@ if (!hasGsap || reduce) {
   const tl = $('.timeline');
   if (tl) gsap.fromTo(tl, { '--tl': 0 }, { '--tl': 1, ease: 'none', scrollTrigger: { trigger: tl, start: 'top 70%', end: 'bottom 70%', scrub: true } });
 
-  // Pinned, scrubbed journey (desktop only; elsewhere the steps simply stack)
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 901px) and (min-height: 560px)', () => {
-    const J = $('.journey'), steps = $$('.step'), cap = $('.cap-step');
-    const names = ['01 · Operational data', '02 · Absence prediction', '03 · Intelligent rostering', '04 · Measured outcomes'];
-    J.classList.add('pinned');
-    const tlJ = gsap.timeline({
-      scrollTrigger: {
-        trigger: J, start: 'top top', end: '+=320%', pin: '.journey-stage', scrub: .6, anticipatePin: 1,
-        onUpdate: self => {
-          const i = Math.min(3, Math.floor(self.progress * 4 + .0001));
-          steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
-          cap.textContent = names[i];
-        },
-      },
-      defaults: { ease: 'none' },
-    });
-    gsap.set('.s-out', { opacity: 0 });
-    gsap.set('.s-data', { opacity: 1 });
+  // The journey scene. Pinned and scrubbed with a real mouse on a large screen; everywhere else
+  // (phones, touch tablets, short windows) it stacks and plays once when it scrolls into view.
+  const J = $('.journey'), steps = $$('.step'), cap = $('.cap-step');
+  const STEP_NAMES = ['01 · Operational data', '02 · Absence prediction', '03 · Intelligent rostering', '04 · Measured outcomes'];
+  const setStep = i => { steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); if (cap) cap.textContent = STEP_NAMES[i]; };
+  function sceneTimeline(vars) {
+    gsap.set('.s-out', { opacity: 0 }); gsap.set('.s-data', { opacity: 1 });
     gsap.set(dots, { opacity: 0, scale: 0, transformOrigin: 'center' });
     gsap.set('.bar', { scaleY: 0, transformOrigin: '50% 100%' });
-    tlJ
+    return gsap.timeline({ ...vars, defaults: { ease: 'none' } })
       .to(dots, { opacity: 1, scale: 1, stagger: { each: .008, from: 'random' }, duration: .5 }, 0)
-      // 02: data condenses into model inputs, network appears
       .to(dots.slice(0, inputPts.length), { x: (i, t) => inputPts[i].x - t.cx.baseVal.value, y: (i, t) => inputPts[i].y - t.cy.baseVal.value, duration: .7 }, 1)
       .to(dots.slice(inputPts.length), { x: (i, t) => 120 - t.cx.baseVal.value, opacity: 0, duration: .7, stagger: .004 }, 1)
       .fromTo('.s-model', { opacity: 0 }, { opacity: 1, duration: .6 }, 1.2)
-      // 03: model resolves into a roster grid
       .to(['.s-model', dots.slice(0, inputPts.length)], { opacity: 0, duration: .3 }, 1.85)
       .fromTo('.s-roster', { opacity: 0 }, { opacity: 1, duration: .2 }, 2.1)
       .fromTo(cells, { opacity: 0, scale: .4, transformOrigin: 'center' }, { opacity: 1, scale: 1, stagger: { each: .012, from: 'start' }, duration: .5 }, 2.15)
-      // 04: outcomes
       .to('.s-roster', { opacity: .06, duration: .5 }, 3.05)
       .to('.s-out', { opacity: 1, duration: .3 }, 3)
       .to('.bar', { scaleY: 1, duration: .7, stagger: .12 }, 3.1);
-    return () => J.classList.remove('pinned');
+  }
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 901px) and (min-height: 560px) and (hover: hover) and (pointer: fine)', () => {
+    J.classList.add('pinned');
+    // Pin when the content sits centred in the space below the fixed nav (not when the section top hits the
+    // viewport top), so the section keeps normal spacing above it instead of a viewport-high band.
+    const stage = $('.journey-stage', J), grid = $('.journey-grid', J);
+    const pinAt = () => {
+      const navH = ($('.nav-wrap')?.getBoundingClientRect().bottom || 80) + 8, room = innerHeight - navH;
+      const gridTop = grid.getBoundingClientRect().top - stage.getBoundingClientRect().top;
+      return stage.getBoundingClientRect().top + scrollY + gridTop - navH - Math.max(0, (room - grid.offsetHeight) / 2);
+    };
+    const tl = sceneTimeline({ scrollTrigger: { trigger: J, start: pinAt, end: () => pinAt() + innerHeight * 2.4, pin: '.journey-stage', scrub: .6, anticipatePin: 1,
+      onUpdate: self => setStep(Math.min(3, Math.floor(self.progress * 4 + .0001))) } });
+    return () => { J.classList.remove('pinned'); tl.scrollTrigger?.kill(); tl.kill(); };
+  });
+  mm.add('(max-width: 900px), (max-height: 559px), (hover: none), (pointer: coarse)', () => {
+    const tl = sceneTimeline({ paused: true, onUpdate: () => setStep(Math.min(3, Math.floor(tl.progress() * 4 + .0001))) });
+    tl.timeScale(.55);
+    const st = ScrollTrigger.create({ trigger: '.scene', start: 'top 80%', once: true, onEnter: () => tl.play() });
+    return () => { st.kill(); tl.kill(); };
   });
 }
 
@@ -311,4 +305,64 @@ if (labNav) {
     const n = labTabs[(i + (e.key === 'ArrowRight' ? 1 : labTabs.length - 1)) % labTabs.length]; n.focus(); n.click();
   });
   new IntersectionObserver((es, ob) => { if (es.some(e => e.isIntersecting)) { mountLab(current()); ob.disconnect(); } }, { rootMargin: '300px' }).observe($('#labs'));
+}
+
+
+/* ---------- Skill sample diagrams (loaded on demand) ---------- */
+const skillHost = $('.skill-view');
+if (skillHost) {
+  let started = false;
+  const start = () => { if (started) return; started = true; import('./labs/skills.js').then(m => m.mountSkills(skillHost)).catch(err => { started = false; console.error('Skills failed to load', err); }); };
+  new IntersectionObserver((es, ob) => { if (es.some(e => e.isIntersecting)) { start(); ob.disconnect(); } }, { rootMargin: '300px' }).observe($('#capabilities'));
+}
+
+/* ---------- Live experience counter (IST start, calendar-accurate) ---------- */
+const expEl = $('.exp[data-since]');
+if (expEl) {
+  const start = new Date(expEl.dataset.since), IST = 5.5 * 36e5;
+  const parts = d => { const x = new Date(d.getTime() + IST); return [x.getUTCFullYear(), x.getUTCMonth(), x.getUTCDate(), x.getUTCHours(), x.getUTCMinutes(), x.getUTCSeconds()]; };
+  const S = parts(start), cells = Object.fromEntries($$('[data-u]', expEl).map(b => [b.dataset.u, b]));
+  const two = n => String(n).padStart(2, '0');
+  const update = () => {
+    const N = parts(new Date());
+    let [y, mo, d, h, mi, s] = N.map((v, i) => v - S[i]);
+    if (s < 0) { s += 60; mi--; } if (mi < 0) { mi += 60; h--; } if (h < 0) { h += 24; d--; }
+    if (d < 0) { d += new Date(Date.UTC(N[0], N[1], 0)).getUTCDate(); mo--; }
+    if (mo < 0) { mo += 12; y--; }
+    cells.years.textContent = two(y); cells.months.textContent = two(mo); cells.days.textContent = two(d);
+    cells.hours.textContent = two(h); cells.minutes.textContent = two(mi); cells.seconds.textContent = two(s);
+  };
+  update(); setInterval(update, 1000);
+}
+
+/* ---------- System map (loaded on demand) ---------- */
+const sysHost = $('[data-sysmap]');
+if (sysHost) {
+  let sysStarted = false;
+  new IntersectionObserver((es, ob) => { if (es.some(e => e.isIntersecting) && !sysStarted) { sysStarted = true; ob.disconnect(); import('./labs/sysmap.js').then(m => m.mountSysmap(sysHost)).catch(err => { sysStarted = false; console.error('System map failed to load', err); }); } }, { rootMargin: '300px' }).observe(sysHost);
+}
+
+/* ---------- In-page links: smooth scroll in JS, then re-aim if late-loading blocks grow the page mid-scroll ---------- */
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]'); if (!a || a.getAttribute('href') === '#') return;
+  const target = document.getElementById(a.getAttribute('href').slice(1)); if (!target) return;
+  e.preventDefault();
+  history.pushState(null, '', a.getAttribute('href'));
+  scrollTo({ top: target.id === 'top' ? 0 : scrollY + target.getBoundingClientRect().top - 96, behavior: reduce ? 'auto' : 'smooth' });
+  if (a.classList.contains('skip')) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
+  [900, 1800, 3000].forEach(ms => setTimeout(() => {
+    const off = target.getBoundingClientRect().top - 96;
+    if (Math.abs(off) > 40) scrollTo({ top: scrollY + off, behavior: ms === 900 ? 'smooth' : 'auto' });
+  }, ms));
+});
+
+/* ---------- Keep scroll triggers accurate when late content changes the page height ---------- */
+if (hasGsap && window.ScrollTrigger && 'ResizeObserver' in window) {
+  let rt, lastH = document.documentElement.scrollHeight;
+  new ResizeObserver(() => {
+    const hgt = document.documentElement.scrollHeight; if (Math.abs(hgt - lastH) < 4) return; lastH = hgt;
+    clearTimeout(rt); rt = setTimeout(() => ScrollTrigger.refresh(), 250);
+  }).observe(document.body);
+  addEventListener('load', () => ScrollTrigger.refresh());
+  if (document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
 }

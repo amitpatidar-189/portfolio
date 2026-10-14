@@ -17,7 +17,6 @@ No database models are used, so no migrations are needed to view the site.
 - `templates/base.html`, `templates/portfolio/home.html` — page structure.
 - `static/css/` — `design-system` (tokens), `base`, `glassmorphism`, `layout`, `components`, `animations`, `responsive`.
 - `static/js/main.js` — nav, tabs, GSAP animations, pointer effects. Respects `prefers-reduced-motion`.
-- `static/files/Amit_Patidar_Resume.pdf` — served at `/resume/`. Replace the file to update.
 
 ## To finish
 - Set `linkedin` in `portfolio/content.py` (the button is hidden while empty).
@@ -32,7 +31,6 @@ Set `DJANGO_DEBUG=0`, a real `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS=yourdoma
 
 ## Interactive pieces
 - Module map, before/after slider and roster simulator live in the "Selected work" section. Their text is in `portfolio/content.py` (`MODULES`, `COMPARE`); the simulator uses made-up numbers and is labelled as such.
-- "Calm mode" (footer) turns off animation and remembers the choice in the browser.
 - Optional analytics: set `PLAUSIBLE_DOMAIN` in `.env` to enable Plausible. It is off by default.
 
 ## Deploying (Render)

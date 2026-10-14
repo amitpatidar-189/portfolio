@@ -4,7 +4,7 @@ export const $ = (s, c = document) => c.querySelector(s);
 export const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
-export const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('calm');
+export const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function apply(e, attrs, kids) {
   for (const [k, v] of Object.entries(attrs)) {

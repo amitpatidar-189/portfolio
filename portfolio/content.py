@@ -1,4 +1,4 @@
-"""Portfolio content. Every fact here comes from Amit's resume (CV/Amit_Patidar_Product_Manager_Resume.pdf).
+"""Portfolio content. Every fact here comes from Amit's resume (kept offline, not published on the site).
 
 Edit this file to update the site. Do not add metrics that the resume does not support.
 """
@@ -8,6 +8,7 @@ PROFILE = {
     "headline": "Building intelligent products at the intersection of business, data and AI.",
     "role": "Project Manager, Product & Digital Transformation",
     "company": "Veracity Supply Chain Ltd.",
+    "since": "2025-04-01T09:00:00+05:30",  # start of Amit's time at Veracity (live counter)
     "location": "Gandhinagar, Gujarat, India",
     "email": "amit.patidar189@gmail.com",
     "whatsapp": "919399277189",  # country code + number, digits only (wa.me format)

@@ -1,5 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 6rem; -webkit-text-size-adjust: 100%; }
+/* No CSS smooth scrolling: it breaks ScrollTrigger refresh measurements (pins go blank). Anchors are smoothed in main.js. */
+html { scroll-padding-top: 6rem; -webkit-text-size-adjust: 100%; }
 body { margin: 0; font: 400 1.0625rem/1.6 var(--font); color: var(--ink); background: var(--bg); overflow-x: hidden; }
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }

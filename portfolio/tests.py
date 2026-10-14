@@ -12,11 +12,12 @@ class PortfolioTests(TestCase):
         for s in ("Amit Patidar", "ShiftEaze", "mailto:amit.patidar189@gmail.com"):
             self.assertContains(r, s)
 
-    def test_resume_redirects_to_existing_pdf(self):
-        r = self.client.get(reverse("portfolio:resume"))
-        self.assertEqual(r.status_code, 302)
-        self.assertTrue(r["Location"].endswith("Amit_Patidar_Resume.pdf"))
-        self.assertIsNotNone(finders.find("files/Amit_Patidar_Resume.pdf"))
+    def test_no_resume_download_anywhere(self):
+        html = self.client.get("/").content.decode().lower()
+        self.assertNotIn("download resume", html)
+        self.assertNotIn("view resume", html)
+        self.assertNotIn("/resume/", html)
+        self.assertEqual(self.client.get("/resume/").status_code, 404)
 
     def test_linkedin_link_matches_profile(self):
         url = content.PROFILE["linkedin"]
@@ -67,7 +68,7 @@ class SiteStructureTests(TestCase):
         self.assertContains(self.client.get("/"), "application/ld+json")
 
     def test_lab_modules_and_og_image_exist(self):
-        for f in ("js/labs/shifteaze.js", "js/labs/cat.js", "js/labs/krishi.js", "js/labs/util.js", "images/og.png", "css/labs.css"):
+        for f in ("js/labs/shifteaze.js", "js/labs/cat.js", "js/labs/krishi.js", "js/labs/util.js", "js/labs/skills.js", "js/labs/sysmap.js", "css/skills.css", "images/og.png", "css/labs.css"):
             self.assertIsNotNone(finders.find(f), f)
 
     def test_missing_page_uses_custom_404(self):
@@ -79,3 +80,18 @@ class SiteStructureTests(TestCase):
         r = self.client.get("/")
         self.assertContains(r, "https://wa.me/919399277189")
         self.assertContains(r, 'class="to-top')
+
+
+    def test_hero_counter_and_contact_logos(self):
+        r = self.client.get("/")
+        self.assertContains(r, 'data-since="2025-04-01T09:00:00+05:30"')
+        for unit in ("years", "months", "days", "hours", "minutes", "seconds"):
+            self.assertContains(r, f'data-u="{unit}"')
+        self.assertContains(r, "Building intelligent products at the intersection")
+        self.assertContains(r, content.PROFILE["role"].split()[0])
+        for label in ("Opens your mail app", "Opens wa.me/919399277189", "Opens linkedin.com/in/amit-patidar"):
+            self.assertContains(r, label)
+        self.assertContains(r, "data-sysmap")
+        html = r.content.decode()
+        self.assertEqual(html.count('href="#contact"'), 1)  # one in-page route to Contact, not three
+        self.assertIn("Message on WhatsApp", html)
